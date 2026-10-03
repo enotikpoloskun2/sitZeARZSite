@@ -25,7 +25,6 @@
             -webkit-tap-highlight-color: transparent;
         }
 
-        /* ========== КАСТОМНЫЙ КУРСОР (только для ПК) ========== */
         .cursor-dot, .cursor-ring { display: none; }
         @media (hover: hover) and (pointer: fine) {
             .cursor-dot, .cursor-ring { display: block; }
@@ -58,7 +57,6 @@
             a, button, .tab, .faq-q, .gallery img, input, textarea { cursor: none; }
         }
 
-        /* ========== СЕТКА НА ФОНЕ ========== */
         .grid-bg {
             position: fixed;
             top: 0; left: 0;
@@ -115,7 +113,6 @@
             100% { transform: translate(-500px, 500px) rotate(35deg); opacity: 0; }
         }
 
-        /* ========== ВЕРХНЕЕ МЕНЮ ========== */
         .top-nav {
             width: 100%; max-width: 1100px;
             display: flex; justify-content: center; align-items: center;
@@ -180,7 +177,6 @@
             to { transform: scale(4); opacity: 0; }
         }
 
-        /* ========== КАРТОЧКА ========== */
         .card {
             background: rgba(20,20,35,0.88);
             backdrop-filter: blur(15px);
@@ -435,7 +431,6 @@
         }
         .to-top.show { opacity: 1; pointer-events: auto; }
 
-        /* ========== АДАПТИВ ========== */
         @media (max-width: 820px) {
             .top-nav { max-width: 100%; gap: 5px; }
             .top-nav .tab { padding: 8px 13px; font-size: 12px; }
@@ -634,7 +629,7 @@
             <div id="reviewsList"></div>
         </div>
 
-        <div class="note">
+        <div class="note" id="noteDownload">
             Нажимая кнопку «Скачать», ты соглашаешься с правилами использования.<br>
             Если файл не скачался — <a href="https://t.me/enotwwwww" target="_blank" rel="noopener">напиши в поддержку</a>.
         </div>
@@ -650,10 +645,9 @@
 
     <button class="to-top" id="toTop">↑</button>
 
-    <!-- ========== FIREBASE SDK ========== -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-        import { getDatabase, ref, push, onValue, serverTimestamp }
+        import { getDatabase, ref, push, onValue }
             from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
 
         const firebaseConfig = {
@@ -670,7 +664,6 @@
         const db  = getDatabase(app);
         const reviewsRef = ref(db, 'reviews');
 
-        /* ========== КАСТОМНЫЙ КУРСОР ========== */
         const hasMouse = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
         const isMobile = window.innerWidth < 600;
 
@@ -701,7 +694,6 @@
             });
         }
 
-        /* ========== СЕТКА ========== */
         if (hasMouse) {
             const gridBg = document.getElementById('gridBg');
             document.addEventListener('mousemove', (e) => {
@@ -711,7 +703,6 @@
             });
         }
 
-        /* ========== ЧАСТИЦЫ ========== */
         if (!isMobile) {
             const particlesContainer = document.getElementById('particles');
 
@@ -751,7 +742,6 @@
             }
         }
 
-        /* ========== RIPPLE ========== */
         if (!isMobile) {
             document.querySelectorAll('.tab, .btn, .support-item, .review-form button, .faq-q').forEach(el => {
                 el.addEventListener('click', function(e) {
@@ -768,24 +758,31 @@
             });
         }
 
-        /* ========== ВКЛАДКИ ========== */
+        /* ========== ВКЛАДКИ + показ/скрытие note ========== */
+        const noteDownload = document.getElementById('noteDownload');
+
         document.querySelectorAll('.tab').forEach(tab => {
             tab.addEventListener('click', () => {
                 document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
                 document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
                 tab.classList.add('active');
                 document.getElementById('tab-' + tab.dataset.tab).classList.add('active');
+
+                // Показываем note только на вкладке "Скачать"
+                if (tab.dataset.tab === 'download') {
+                    noteDownload.style.display = 'block';
+                } else {
+                    noteDownload.style.display = 'none';
+                }
             });
         });
 
-        /* ========== FAQ ========== */
         document.querySelectorAll('.faq-q').forEach(q => {
             q.addEventListener('click', () => {
                 q.parentElement.classList.toggle('open');
             });
         });
 
-        /* ========== КНОПКА СКАЧАТЬ ========== */
         document.getElementById('downloadBtn').addEventListener('click', function() {
             const loader = document.getElementById('loader');
             const fill   = document.getElementById('progressFill');
@@ -799,7 +796,6 @@
             }, 250);
         });
 
-        /* ========== ЛАЙТБОКС ========== */
         const gallery    = document.getElementById('gallery');
         const galleryImgs = Array.from(gallery.querySelectorAll('img'));
         const lightbox   = document.getElementById('lightbox');
@@ -859,7 +855,6 @@
             if (e.key === 'ArrowLeft') showPrev();
         });
 
-        /* ========== ОТЗЫВЫ (FIREBASE) ========== */
         const reviewsList = document.getElementById('reviewsList');
         const reviewName  = document.getElementById('reviewName');
         const reviewText  = document.getElementById('reviewText');
@@ -880,7 +875,6 @@
             });
         });
 
-        // Загрузка отзывов в реальном времени
         onValue(reviewsRef, (snapshot) => {
             const data = snapshot.val() || {};
             const arr = Object.values(data).sort((a, b) => (b.date || 0) - (a.date || 0));
@@ -909,7 +903,6 @@
             });
         });
 
-        // Отправка отзыва
         submitBtn.addEventListener('click', () => {
             const name = reviewName.value.trim();
             const text = reviewText.value.trim();
@@ -941,7 +934,6 @@
             });
         });
 
-        /* ========== КНОПКА НАВЕРХ ========== */
         const toTop = document.getElementById('toTop');
         window.addEventListener('scroll', () => {
             if (window.scrollY > 200) toTop.classList.add('show');
