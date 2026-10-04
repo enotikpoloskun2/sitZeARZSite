@@ -491,6 +491,10 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
   $('#signOut').addEventListener('click', logout); $('#deniedLogout').addEventListener('click', logout);
   function authError(error) {
     const code = error.code || '';
+    // Report only the error code, never credentials or authentication responses.
+    console.warn('Firebase Authentication:', code || 'unknown');
+    if (code === 'auth/network-request-failed') return 'Не удалось подключиться к сервису входа. Проверь соединение и повтори попытку.';
+    if (code === 'auth/app-not-authorized') return 'Вход с этого адреса пока не разрешён. Владелец проекта должен проверить разрешённые домены сервиса входа.';
     if (['auth/invalid-credential', 'auth/wrong-password', 'auth/user-not-found', 'auth/invalid-email'].includes(code)) return 'Не удалось войти. Проверь почту и пароль.';
     if (code === 'auth/too-many-requests') return 'Слишком много попыток. Подожди немного и повтори вход.';
     if (code === 'auth/user-disabled') return 'Вход для этого аккаунта отключён.';
