@@ -2,7 +2,7 @@
 <html lang="ru">
 <head>
   <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="robots" content="noindex,nofollow"><meta name="referrer" content="no-referrer">
+  <meta name="robots" content="noindex,nofollow"><meta name="referrer" content="strict-origin-when-cross-origin">
   <meta name="color-scheme" content="dark"><title>Управление · Arizona Tools</title>
   <style>@font-face {
   font-family: 'Manrope';
@@ -187,14 +187,15 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
 (() => {
   'use strict';
   const firebase = {
-            apiKey: "AIzaSyAULW9wWpQxy7fHt--4pK9MU1iGwn5e4",
-            authDomain: "arizona-tools-otzivi.firebaseapp.com",
-            databaseURL: "https://arizona-tools-otzivi-default-rtdb.firebaseio.com/",
-            projectId: "arizona-tools-otzivi",
-            storageBucket: "arizona-tools-otzivi.firebasestorage.app",
-            messagingSenderId: "795400515679",
-            appId: "1:795400515679:web:053206403f3043a897ebea"
-        };
+  "apiKey": "AIzaSyAI5uuM1kv_piuuXbDq5dwdVZDgNrJZXTk",
+  "authDomain": "arizona-tools-otzivi.firebaseapp.com",
+  "databaseURL": "https://arizona-tools-otzivi-default-rtdb.firebaseio.com",
+  "projectId": "arizona-tools-otzivi",
+  "storageBucket": "arizona-tools-otzivi.firebasestorage.app",
+  "messagingSenderId": "795400515679",
+  "appId": "1:795400515679:web:053206403f3043a897ebea",
+  "measurementId": "G-70T4WT696D"
+};
   // Only enabled in the public deployment after the server rules and owner account are configured.
   const administrationReady = true;
   const defaults = Object.freeze({
@@ -517,6 +518,7 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
         ]);
         authApi = module; api = connection.api; db = connection.db;
         auth = module.getAuth(connection.app);
+        auth.languageCode = 'ru';
         // Local Auth emulator wiring is inserted only into the QA build.
         await module.setPersistence(auth, module.browserSessionPersistence);
         module.onAuthStateChanged(auth, nextUser => {
