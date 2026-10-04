@@ -263,7 +263,23 @@ summary{font-size:17px;line-height:1.65}
   .donation-copy{flex-direction:column}
 }
 
-  </style>
+  
+/* Real-time site statistics */
+.site-stats{border-top:1px solid #ffffff08;background:#0c0e0c}
+.site-stats-inner{min-height:38px;display:flex;align-items:center;justify-content:center;gap:14px}
+.site-stat{display:flex;align-items:center;gap:7px;color:#a9afa8;font-size:11px;line-height:1;white-space:nowrap}
+.site-stat strong{color:#f0f3ee;font-size:12px;font-variant-numeric:tabular-nums;min-width:18px;text-align:left}
+.site-stat-label{opacity:.88}
+.site-stat-dot{width:7px;height:7px;border-radius:50%;background:#7ee787;box-shadow:0 0 0 3px #7ee78716,0 0 10px #7ee78766}
+.site-stat-icon{width:14px;height:14px;color:#8f968e}
+.site-stat-divider{width:1px;height:15px;background:#ffffff12}
+@media (max-width:640px){
+  .site-stats-inner{min-height:34px;gap:10px}
+  .site-stat{font-size:10px;gap:5px}
+  .site-stat strong{font-size:11px}
+  .site-stat-divider{height:13px}
+}
+</style>
 <script type="text/plain" data-license="Manrope / SIL OFL 1.1">
 Copyright 2018 The Manrope Project Authors (https://github.com/googlefonts/manrope)
 
@@ -394,6 +410,22 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
       <div class="header-actions"><a class="button button-primary button-small" href="#download">Скачать <svg class="icon" aria-hidden="true"><use href="#i-download"/></svg></a><button class="icon-button menu-toggle" id="menuToggle" type="button" aria-label="Открыть меню" aria-expanded="false" aria-controls="mobileNav"><svg class="icon" aria-hidden="true"><use href="#i-menu"/></svg></button></div>
     </div>
     <nav class="mobile-nav" id="mobileNav" aria-label="Мобильная навигация" hidden><a href="#features">Возможности</a><a href="#screenshots">Интерфейс</a><a href="#faq">Вопросы и ответы</a><a href="#reviews">Отзывы</a><a href="#support">Поддержка</a><a href="#donate">Поддержать автора</a></nav>
+
+    <div class="site-stats" aria-label="Статистика сайта">
+      <div class="container site-stats-inner">
+        <div class="site-stat">
+          <span class="site-stat-dot" aria-hidden="true"></span>
+          <span class="site-stat-label">Сейчас на сайте</span>
+          <strong id="onlineVisitors">—</strong>
+        </div>
+        <div class="site-stat-divider" aria-hidden="true"></div>
+        <div class="site-stat">
+          <svg class="site-stat-icon" aria-hidden="true"><use href="#i-eye"/></svg>
+          <span class="site-stat-label">Всего посещений</span>
+          <strong id="totalVisits">—</strong>
+        </div>
+      </div>
+    </div>
   </header>
   <main id="main">
     <section class="hero" aria-labelledby="heroTitle">
@@ -844,6 +876,61 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
       submit.textContent = 'Опубликовать отзыв';
     }
   });
+})();
+
+
+/* Arizona Tools — real visitor statistics via CounterAPI.
+   Total = page visits recorded by the counter.
+   Online = unique visitors with activity during the last 5 minutes.
+   A heartbeat is sent every 2 minutes while this page is open. */
+(() => {
+  const totalEl = document.getElementById('totalVisits');
+  const onlineEl = document.getElementById('onlineVisitors');
+  if (!totalEl || !onlineEl) return;
+
+  const namespace = encodeURIComponent(window.location.hostname || 'arizona-tools');
+  const totalKey = encodeURIComponent('site-visits');
+  const presenceKey = encodeURIComponent('site-presence');
+
+  const api = (action, key, params = '') =>
+    `https://counterapi.com/api/${namespace}/${action}/${key}${params ? '?' + params : ''}`;
+
+  const readJson = async (url) => {
+    const response = await fetch(url, { cache: 'no-store', mode: 'cors' });
+    if (!response.ok) throw new Error(`counter-${response.status}`);
+    return response.json();
+  };
+
+  const updateTotal = async () => {
+    try {
+      const data = await readJson(api('view', totalKey, 'unique=false'));
+      if (typeof data.value === 'number') totalEl.textContent = data.value.toLocaleString('ru-RU');
+    } catch (_) {
+      totalEl.textContent = '—';
+    }
+  };
+
+  const heartbeat = async () => {
+    try {
+      await readJson(api('presence', presenceKey, 'trackOnly=true'));
+      const data = await readJson(
+        api('any', presenceKey, 'timeline=5m&unique=true&readOnly=true')
+      );
+      const value = Number(data.value);
+      if (Number.isFinite(value)) onlineEl.textContent = value.toLocaleString('ru-RU');
+    } catch (_) {
+      // Keep the last known value instead of replacing it with a fake number.
+    }
+  };
+
+  updateTotal();
+  heartbeat();
+
+  // Keep the visitor "online" while the page remains open.
+  const heartbeatTimer = setInterval(heartbeat, 120000);
+
+  // Stop the timer when the page is being discarded.
+  window.addEventListener('pagehide', () => clearInterval(heartbeatTimer), { once: true });
 })();
 
 </script>
