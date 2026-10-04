@@ -31,6 +31,9 @@
 @media(max-width:900px){.dashboard{grid-template-columns:minmax(0,1fr)}.sidebar{min-width:0;max-width:100%}.sidebar nav{min-width:0;width:100%}.workspace-header>div:first-child{min-width:0}.header-right{flex-shrink:0}}
 .sidebar nav{scrollbar-width:thin;scrollbar-color:#485438 transparent}
 
+.scripts-toolbar{display:flex;justify-content:space-between;align-items:center;gap:16px;margin-bottom:20px}.scripts-toolbar>div,.script-editor-actions>div{display:flex;gap:9px;flex-wrap:wrap}.scripts-toolbar>.muted{font-size:13px}.script-editor{margin:24px 0}.script-editor .card-heading{margin-bottom:12px}.script-visibility{margin:25px 0}.script-image-previews{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-top:17px}.script-image-preview{min-width:0;padding:8px;border:1px solid var(--line);border-radius:12px;background:#10160d}.script-image-preview img{display:block;width:100%;aspect-ratio:16/10;object-fit:contain;border-radius:7px}.script-image-preview button{width:100%;margin-top:7px;font-size:12px;min-height:38px;padding:7px}.script-editor-actions{border-top:1px solid var(--line);padding-top:23px;display:flex;justify-content:space-between;align-items:center;gap:16px}.script-editor-actions>.muted{font-size:13px}.script-admin-list{display:grid;gap:14px}.script-admin-card{display:flex;align-items:center;gap:20px;padding:20px;border:1px solid var(--line);border-radius:14px;background:var(--surface);min-width:0}.script-admin-thumb{width:108px;aspect-ratio:16/10;object-fit:contain;border-radius:8px;background:#10150c;flex-shrink:0}.script-admin-summary{flex:1;min-width:0}.script-admin-summary h3{font-size:18px;overflow-wrap:anywhere}.script-admin-summary p{font-size:13px;color:var(--muted);margin-top:5px;overflow-wrap:anywhere}.script-status-label{color:var(--lime);font-size:12px}.script-status-label.is-hidden{color:var(--amber)}.script-admin-card>.button{flex-shrink:0}.script-editor input[type=file]{font-size:14px;overflow:hidden}.script-editor input[type=file]::file-selector-button{border:0;border-radius:6px;background:#c5f7791c;color:var(--lime);padding:8px;margin-right:10px;cursor:pointer}.script-editor fieldset{border:0;padding:0;margin:0;min-width:0}
+@media(max-width:650px){.scripts-toolbar{align-items:flex-start;flex-direction:column}.scripts-toolbar>div{width:100%}.scripts-toolbar .button{flex:1;font-size:13px;padding:10px}.script-image-previews{grid-template-columns:minmax(0,1fr)}.script-image-preview{display:grid;grid-template-columns:90px minmax(0,1fr);gap:10px;align-items:center}.script-image-preview button{margin:0}.script-editor-actions{align-items:stretch;flex-direction:column}.script-editor-actions>div>.button{flex:1;font-size:13px;padding:11px}.script-admin-card{flex-wrap:wrap;gap:12px;padding:17px}.script-admin-thumb{width:74px}.script-admin-card>.button{width:100%}.script-admin-summary h3{font-size:17px}}
+
   </style>
 <script type="text/plain" data-license="Manrope / SIL OFL 1.1">
 Copyright 2018 The Manrope Project Authors (https://github.com/googlefonts/manrope)
@@ -159,7 +162,7 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
   </div>
   <div id="dashboard" class="dashboard" hidden>
     <aside class="sidebar"><a class="brand" href="./index.html"><span class="brand-mark"><svg><use href="#logo"/></svg></span><span>arizona<em>tools</em></span></a><span class="sidebar-caption">УПРАВЛЕНИЕ САЙТОМ</span>
-      <nav aria-label="Разделы управления" id="adminNav"><button type="button" data-panel="overview" aria-current="page"><svg><use href="#grid"/></svg>Обзор</button><button type="button" data-panel="links"><svg><use href="#download"/></svg>Загрузка и ссылки</button><button type="button" data-panel="maintenance"><svg><use href="#tool"/></svg>Технические работы</button><button type="button" data-panel="reviews"><svg><use href="#chat"/></svg>Отзывы</button><button type="button" data-panel="security"><svg><use href="#shield"/></svg>Безопасность</button></nav>
+      <nav aria-label="Разделы управления" id="adminNav"><button type="button" data-panel="overview" aria-current="page"><svg><use href="#grid"/></svg>Обзор</button><button type="button" data-panel="links"><svg><use href="#download"/></svg>Загрузка и ссылки</button><button type="button" data-panel="scripts"><svg><use href="#grid"/></svg>Допскрипты</button><button type="button" data-panel="maintenance"><svg><use href="#tool"/></svg>Технические работы</button><button type="button" data-panel="reviews"><svg><use href="#chat"/></svg>Отзывы</button><button type="button" data-panel="security"><svg><use href="#shield"/></svg>Безопасность</button></nav>
       <div class="sidebar-bottom"><a href="./index.html" target="_blank" rel="noopener noreferrer">Открыть сайт<svg><use href="#out"/></svg></a><div class="account"><span class="account-avatar">A</span><div><strong>Администратор</strong><span id="accountEmail"></span></div></div><button type="button" class="logout-button" id="signOut"><svg><use href="#logout"/></svg>Выйти из аккаунта</button></div>
     </aside>
     <main class="workspace"><header class="workspace-header"><div><span class="eyebrow">ARIZONA TOOLS</span><h1 id="panelTitle">Обзор сайта</h1></div><div class="header-right"><span class="connection-badge" id="connectionBadge"><i></i>Подключение…</span><button type="button" class="button quiet compact" id="reloadSettings" aria-label="Обновить настройки"><svg><use href="#refresh"/></svg><span>Обновить</span></button></div></header>
@@ -175,7 +178,24 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
           </section>
           <section class="panel" id="panel-maintenance" hidden aria-labelledby="maintenanceTitleLabel"><div class="section-intro"><span class="eyebrow">ДАЖЕ ПАУЗА МОЖЕТ БЫТЬ КРАСИВОЙ</span><h2 id="maintenanceTitleLabel">Технические работы</h2><p>Сообщи посетителям, что происходит, и когда ждать возвращения.</p></div><div class="maintenance-grid"><div class="card form-card"><label class="switch-row" for="maintenance"><span><strong>Режим технических работ</strong><small>Вместо сайта появится экран с твоим сообщением.</small></span><input type="checkbox" id="maintenance" name="maintenance" role="switch"></label><div class="field-divider"></div><label for="maintenanceTitle">Заголовок</label><input id="maintenanceTitle" name="maintenanceTitle" required maxlength="100"><label for="maintenanceMessage">Сообщение посетителям</label><textarea id="maintenanceMessage" name="maintenanceMessage" required maxlength="700" rows="5"></textarea><label for="maintenanceEta">Когда вернёмся <span class="optional">необязательно</span></label><input id="maintenanceEta" name="maintenanceEta" maxlength="80" placeholder="Например, сегодня к 20:00 МСК"><span class="field-hint">Это сообщение, а не таймер автоматического открытия.</span></div><div class="maintenance-side"><div class="maintenance-preview"><span class="preview-label">ТАК УВИДЯТ ПОСЕТИТЕЛИ</span><div class="preview-logo"><svg><use href="#logo"/></svg></div><span class="maintenance-tag"><i></i>Технические работы</span><h3 id="previewTitle">Скоро вернёмся.</h3><p id="previewMessage"></p><span id="previewEta" hidden></span><span class="preview-link">Следить за новостями ↗</span></div><div class="info-strip"><svg><use href="#shield"/></svg><p>Админка останется доступна. Для открытия сайта выключи режим и сохрани изменения.</p></div></div></div></section>
         </form>
-        <section class="panel" id="panel-reviews" hidden aria-labelledby="reviewsTitle"><div class="section-intro"><span class="eyebrow">ГОЛОС СООБЩЕСТВА</span><h2 id="reviewsTitle">Отзывы о Tools</h2><p>Можно скрыть отзыв с сайта и вернуть его обратно. Показаны последние 100 отзывов.</p></div><div class="reviews-toolbar"><label for="reviewFilter" class="sr-only">Фильтр отзывов</label><select id="reviewFilter"><option value="all">Все отзывы</option><option value="visible">Опубликованные</option><option value="hidden">Скрытые</option></select><span id="reviewCount" class="muted"></span></div><div id="moderationList" class="moderation-list" aria-live="polite"><div class="empty-state">Загружаем отзывы…</div></div></section>
+        <section class="panel" id="panel-scripts" hidden aria-labelledby="scriptsAdminTitle">
+  <div class="section-intro"><span class="eyebrow">ДРУГИЕ РАБОТЫ АВТОРА</span><h2 id="scriptsAdminTitle">Допскрипты</h2><p>Добавляй отдельные скрипты со своим описанием, загрузкой и скриншотами.</p></div>
+  <div class="scripts-toolbar"><span id="scriptsCount" class="muted">Загружаем каталог…</span><div><button type="button" class="button quiet" id="refreshScripts">Обновить список</button><button type="button" class="button primary" id="addScript">+ Добавить скрипт</button></div></div>
+  <p id="scriptsStatus" class="message" role="status" aria-live="polite"></p>
+  <form id="scriptEditor" class="card script-editor" hidden>
+    <div class="card-heading"><span class="small-icon"><svg><use href="#grid"/></svg></span><div><h3 id="scriptEditorTitle">Новый скрипт</h3><p>Карточка появится на сайте после сохранения.</p></div></div>
+    <label for="scriptTitle">Название скрипта</label><input id="scriptTitle" required maxlength="80" placeholder="Например, быстрые команды">
+    <label for="scriptDescription">Описание скрипта</label><textarea id="scriptDescription" required maxlength="2000" rows="5" placeholder="Что делает скрипт, для кого он и как его установить"></textarea>
+    <label for="scriptDownload">Ссылка на скачивание скрипта</label><input id="scriptDownload" type="url" required maxlength="2048" placeholder="https://…" spellcheck="false"><span class="field-hint">Загрузи сам скрипт на файловый хостинг и вставь ссылку сюда.</span>
+    <label for="scriptImages">Скриншоты скрипта</label><input id="scriptImages" type="file" accept="image/png,image/jpeg,image/webp" multiple aria-describedby="scriptImagesHint"><span class="field-hint" id="scriptImagesHint">До 3 скриншотов, PNG / JPG / WebP до 8 МБ каждый. Мы уменьшим их автоматически. Первый станет обложкой.</span>
+    <div id="scriptImagePreviews" class="script-image-previews"></div>
+    <label class="switch-row script-visibility" for="scriptVisible"><span><strong>Показывать на сайте</strong><small>Выключи, чтобы убрать карточку с витрины. Позже её можно вернуть.</small></span><input id="scriptVisible" type="checkbox" role="switch" checked></label>
+    <div class="script-editor-actions"><span id="scriptDraftState" class="muted">Новая карточка</span><div><button type="button" id="cancelScript" class="button quiet">Отменить</button><button type="submit" id="saveScript" class="button primary">Сохранить скрипт</button></div></div>
+  </form>
+  <div id="scriptAdminList" class="script-admin-list"></div>
+</section>
+
+<section class="panel" id="panel-reviews" hidden aria-labelledby="reviewsTitle"><div class="section-intro"><span class="eyebrow">ГОЛОС СООБЩЕСТВА</span><h2 id="reviewsTitle">Отзывы о Tools</h2><p>Можно скрыть отзыв с сайта и вернуть его обратно. Показаны последние 100 отзывов.</p></div><div class="reviews-toolbar"><label for="reviewFilter" class="sr-only">Фильтр отзывов</label><select id="reviewFilter"><option value="all">Все отзывы</option><option value="visible">Опубликованные</option><option value="hidden">Скрытые</option></select><span id="reviewCount" class="muted"></span></div><div id="moderationList" class="moderation-list" aria-live="polite"><div class="empty-state">Загружаем отзывы…</div></div></section>
         <section class="panel" id="panel-security" hidden aria-labelledby="securityTitle"><div class="section-intro"><span class="eyebrow">ТОЛЬКО ДЛЯ ТЕБЯ</span><h2 id="securityTitle">Безопасность аккаунта</h2><p>Сессия сохраняется в этой вкладке. После 30 минут без действий панель выйдет из аккаунта.</p></div><div class="card form-card security-card"><div class="card-heading"><span class="small-icon"><svg><use href="#shield"/></svg></span><div><h3>Изменить пароль</h3><p>Используй отдельный длинный пароль для управления сайтом.</p></div></div><form id="passwordForm"><label for="currentPassword">Текущий пароль</label><input id="currentPassword" type="password" required autocomplete="current-password" maxlength="128"><label for="newPassword">Новый пароль</label><input id="newPassword" type="password" required minlength="12" maxlength="128" autocomplete="new-password" aria-describedby="passwordHint"><span class="field-hint" id="passwordHint">Не меньше 12 символов. Пароль не сохраняется в файлах сайта.</span><label for="repeatPassword">Повтори новый пароль</label><input id="repeatPassword" type="password" required minlength="12" maxlength="128" autocomplete="new-password"><button type="submit" id="changePassword" class="button primary">Изменить пароль<svg><use href="#arrow"/></svg></button><p id="passwordStatus" class="message" role="status" aria-live="polite"></p></form></div><div class="info-strip"><svg><use href="#shield"/></svg><p>Права выдаются и отзываются в Firebase владельцем проекта. Знание адреса админки не даёт доступа к настройкам.</p></div></section>
       </div>
       <div class="savebar"><div class="savebar-note"><span class="save-dot" id="saveDot"></span><span id="saveState">Загружаем настройки…</span></div><div class="savebar-actions"><button type="button" id="discardChanges" class="button quiet" disabled>Отменить</button><button type="submit" form="settingsForm" id="saveSettings" class="button primary" disabled><svg><use href="#check"/></svg>Сохранить изменения</button></div></div>
@@ -256,6 +276,163 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
 
 (() => {
   'use strict';
+  const maxImages = 3, maxImageLength = 170000;
+  const imageOK = value => typeof value === 'string' && value.length <= maxImageLength && /^data:image\/jpeg;base64,[A-Za-z0-9+/]+={0,2}$/.test(value);
+  function validate(value) {
+    if (!value || typeof value !== 'object') return 'Не удалось прочитать карточку.';
+    if (typeof value.title !== 'string' || !value.title.trim() || value.title.length > 80) return 'Укажи название: до 80 символов.';
+    if (typeof value.description !== 'string' || !value.description.trim() || value.description.length > 2000) return 'Добавь описание: до 2000 символов.';
+    if (!ArizonaConfig.safeUrl(value.downloadUrl)) return 'Укажи полную HTTPS-ссылку для скачивания.';
+    if (typeof value.visible !== 'boolean') return 'Выбери, показывать ли скрипт на сайте.';
+    const images = Object.entries(value.images || {});
+    if (images.length > maxImages || images.some(([key, image]) => !/^[0-2]$/.test(key) || !imageOK(image))) return 'Добавь до трёх скриншотов через выбор файлов.';
+    return null;
+  }
+  function entries(raw) {
+    return Object.entries(raw || {}).filter(([id, value]) => /^script-(0[1-9]|1[0-9]|2[0-4])$/.test(id) && !validate(value))
+      .map(([id, value]) => ({ ...value, id, images: Object.entries(value.images || {}).sort(([a], [b]) => Number(a) - Number(b)).map(([, image]) => image) }))
+      .sort((a, b) => a.id.localeCompare(b.id));
+  }
+  globalThis.ArizonaScripts = Object.freeze({ maxImages, maxImageLength, imageOK, validate, entries });
+})();
+
+function createScriptManager({ request, isAllowed, element }) {
+  const $ = selector => document.querySelector(selector);
+  const form = $('#scriptEditor');
+  let items = [], id = null, base = null, etag = null, photos = [], changed = false, busy = false, epoch = 0;
+  function message(text = '', error = false) { $('#scriptsStatus').textContent = text; $('#scriptsStatus').classList.toggle('error', error); }
+  function controls() {
+    for (const input of form.querySelectorAll('input, textarea, button')) input.disabled = busy;
+    $('#addScript').disabled = busy || !isAllowed(); $('#refreshScripts').disabled = busy;
+    $('#saveScript').disabled = busy || !changed || !etag;
+    $('#scriptDraftState').textContent = busy ? 'Обрабатываем…' : changed ? 'Есть несохранённые изменения' : 'Все изменения сохранены';
+  }
+  function errorText(error) {
+    if (error.message === 'conflict') return 'Карточку уже изменили в другой вкладке. Твои поля остались в форме. Скопируй правки, нажми «Отменить» и открой карточку заново.';
+    if (error.message === 'access-denied') return 'Не удалось подтвердить права на сохранение скриптов. Войди снова или проверь настройки Firebase.';
+    return 'Не удалось получить подтверждение сервера. Поля остались в форме — проверь интернет и повтори действие.';
+  }
+  function payload() {
+    return { schemaVersion: 1, title: $('#scriptTitle').value.trim(), description: $('#scriptDescription').value.trim(), downloadUrl: $('#scriptDownload').value.trim(), visible: $('#scriptVisible').checked, images: Object.fromEntries(photos.map((image, i) => [i, image])) };
+  }
+  function same(a, b) { return ['title', 'description', 'downloadUrl', 'visible'].every(key => a[key] === b[key]) && JSON.stringify(Object.values(a.images || {})) === JSON.stringify(Object.values(b.images || {})); }
+  function markDirty() { changed = !base || !same(payload(), base); controls(); }
+  function renderImages() {
+    const fragment = document.createDocumentFragment();
+    photos.forEach((src, i) => {
+      const card = element('div', 'script-image-preview'); const image = element('img'); image.src = src; image.alt = `Скриншот ${i + 1}`;
+      const remove = element('button', 'button quiet', `Убрать скриншот ${i + 1}`); remove.type = 'button';
+      remove.addEventListener('click', () => { if (busy) return; photos.splice(i, 1); renderImages(); markDirty(); });
+      card.append(image, remove); fragment.append(card);
+    });
+    $('#scriptImagePreviews').replaceChildren(fragment); controls();
+  }
+  function renderList() {
+    $('#scriptsCount').textContent = `${items.filter(item => item.visible).length} на сайте · ${items.length} из 24 карточек`;
+    const fragment = document.createDocumentFragment();
+    for (const item of items) {
+      const card = element('article', 'script-admin-card');
+      if (item.images.length) { const img = element('img', 'script-admin-thumb'); img.src = item.images[0]; img.alt = ''; card.append(img); }
+      const content = element('div', 'script-admin-summary');
+      content.append(element('span', `script-status-label${item.visible ? '' : ' is-hidden'}`, item.visible ? 'На сайте' : 'Скрыт с сайта'), element('h3', '', item.title), element('p', '', `${item.images.length} скриншота · ${new URL(item.downloadUrl).hostname}`));
+      const edit = element('button', 'button quiet', 'Редактировать'); edit.type = 'button'; edit.setAttribute('aria-label', `Редактировать: ${item.title}`);
+      edit.addEventListener('click', () => editItem(item.id)); card.append(content, edit); fragment.append(card);
+    }
+    if (!items.length) fragment.append(element('div', 'empty-state', 'Пока нет допскриптов. Добавь первую карточку — она появится в новом разделе сайта.'));
+    $('#scriptAdminList').replaceChildren(fragment);
+  }
+  async function load() {
+    if (busy || !isAllowed()) return;
+    if (changed) { message('Сначала сохрани карточку или нажми «Отменить».', true); return; }
+    const generation = epoch; busy = true; controls(); message('Загружаем скрипты…');
+    try { const result = await request('extraScripts'); if (generation !== epoch) return; items = ArizonaScripts.entries(result.value); renderList(); message(); }
+    catch (error) { if (generation === epoch) message(errorText(error), true); }
+    finally { if (generation === epoch) { busy = false; controls(); } }
+  }
+  async function editItem(nextId, creating = false) {
+    if (busy || !isAllowed()) return;
+    if (changed) { message('Сначала сохрани текущую карточку или нажми «Отменить».', true); return; }
+    const generation = epoch; busy = true; controls(); message('Открываем карточку…');
+    try {
+      const result = await request(`extraScripts/${nextId}`, {}, true);
+      if (generation !== epoch) return;
+      if (!result.etag) throw new Error('missing-etag');
+      if (creating && result.value) throw new Error('conflict');
+      if (!creating && (!result.value || ArizonaScripts.validate(result.value))) throw new Error('invalid-data');
+      id = nextId; base = result.value; etag = result.etag; photos = Object.values(base?.images || {});
+      form.reset(); $('#scriptTitle').value = base?.title || ''; $('#scriptDescription').value = base?.description || ''; $('#scriptDownload').value = base?.downloadUrl || ''; $('#scriptVisible').checked = base ? base.visible : true;
+      $('#scriptEditorTitle').textContent = creating ? 'Новый скрипт' : 'Редактирование скрипта';
+      form.hidden = false; changed = creating; renderImages(); message(); form.scrollIntoView({ block: 'start', behavior: 'smooth' }); $('#scriptTitle').focus({ preventScroll: true });
+    } catch (error) { if (generation === epoch) message(errorText(error), true); }
+    finally { if (generation === epoch) { busy = false; controls(); } }
+  }
+  async function compress(file) {
+    if (!['image/jpeg', 'image/png', 'image/webp'].includes(file.type) || file.size > 8 * 1024 * 1024) throw new Error('Выбери PNG, JPG или WebP размером до 8 МБ.');
+    const bitmap = await createImageBitmap(file);
+    try {
+      if (!bitmap.width || !bitmap.height || bitmap.width * bitmap.height > 40000000) throw new Error('Изображение слишком большое. Уменьши его до 40 мегапикселей.');
+      const canvas = document.createElement('canvas');
+      let size = Math.min(1, 1000 / Math.max(bitmap.width, bitmap.height));
+      for (let pass = 0; pass < 7; pass++, size *= .8) {
+        canvas.width = Math.max(1, Math.round(bitmap.width * size)); canvas.height = Math.max(1, Math.round(bitmap.height * size));
+        const ctx = canvas.getContext('2d'); ctx.fillStyle = '#ffffff'; ctx.fillRect(0, 0, canvas.width, canvas.height); ctx.drawImage(bitmap, 0, 0, canvas.width, canvas.height);
+        for (const quality of [.84, .7, .56]) { const data = canvas.toDataURL('image/jpeg', quality); if (ArizonaScripts.imageOK(data)) return data; }
+      }
+      throw new Error('Не удалось уменьшить скриншот. Выбери изображение меньшего размера.');
+    } finally { bitmap.close(); }
+  }
+  $('#scriptImages').addEventListener('change', async event => {
+    const files = [...event.target.files]; event.target.value = '';
+    if (!files.length || busy) return;
+    if (photos.length + files.length > ArizonaScripts.maxImages) { message('В карточке может быть до 3 скриншотов. Сначала убери лишние.', true); return; }
+    const generation = epoch; busy = true; controls(); message('Подготавливаем скриншоты…');
+    try {
+      const converted = [];
+      for (const file of files) converted.push(await compress(file));
+      if (generation !== epoch || !isAllowed()) return;
+      photos.push(...converted); renderImages(); markDirty(); message('Скриншоты готовы. Нажми «Сохранить скрипт», чтобы опубликовать карточку.');
+    } catch (error) { if (generation === epoch) message(error.message.startsWith('Выбери') || error.message.startsWith('Изображение') || error.message.startsWith('Не удалось уменьшить') ? error.message : 'Не удалось открыть изображение. Проверь файл и попробуй снова.', true); }
+    finally { if (generation === epoch) { busy = false; controls(); } }
+  });
+  form.addEventListener('input', event => { if (event.target.type !== 'file') markDirty(); });
+  form.addEventListener('submit', async event => {
+    event.preventDefault();
+    if (busy || !changed || !etag || !isAllowed()) return;
+    const value = payload(); const invalid = ArizonaScripts.validate(value);
+    if (invalid) { message(invalid, true); return; }
+    const generation = epoch, revision = (base?.revision || 0) + 1;
+    busy = true; controls(); message('Сохраняем карточку…');
+    const accept = result => {
+      if (generation !== epoch) return;
+      base = result.value; etag = result.etag; changed = false;
+      $('#scriptEditorTitle').textContent = 'Редактирование скрипта';
+      items = [...items.filter(item => item.id !== id), ...ArizonaScripts.entries({ [id]: base })].sort((a, b) => a.id.localeCompare(b.id));
+      renderList(); message(value.visible ? 'Сохранено. Скрипт опубликован на сайте.' : 'Сохранено. Карточка скрыта с сайта; её можно вернуть этим же переключателем.');
+    };
+    try {
+      let result = await request(`extraScripts/${id}`, { method: 'PUT', headers: { 'If-Match': etag }, body: JSON.stringify({ ...value, revision, updatedAt: { '.sv': 'timestamp' } }) }, true);
+      if (!result.etag) result = await request(`extraScripts/${id}`, {}, true);
+      accept(result);
+    } catch (error) {
+      if (generation !== epoch) return;
+      if (error.name === 'AbortError' || error.message === 'request-timeout' || error instanceof TypeError) {
+        try { const check = await request(`extraScripts/${id}`, {}, true); if (check.value?.revision === revision && same(value, check.value) && check.etag) accept(check); else message(errorText(error), true); }
+        catch { message(errorText(error), true); }
+      } else message(errorText(error), true);
+    } finally { if (generation === epoch) { busy = false; controls(); } }
+  });
+  $('#addScript').addEventListener('click', () => {
+    const nextId = Array.from({ length: 24 }, (_, i) => `script-${String(i + 1).padStart(2, '0')}`).find(key => !items.some(item => item.id === key));
+    if (!nextId) { message('Все 24 карточки заняты. Можно отредактировать одну из существующих.', true); return; }
+    editItem(nextId, true);
+  });
+  $('#refreshScripts').addEventListener('click', load);
+  $('#cancelScript').addEventListener('click', () => { if (busy) return; id = base = etag = null; photos = []; changed = false; form.reset(); form.hidden = true; renderImages(); message(); });
+  return { open: load, get dirty() { return changed; }, get busy() { return busy; }, reset() { epoch++; items = []; id = base = etag = null; photos = []; changed = busy = false; form.reset(); form.hidden = true; renderImages(); $('#scriptAdminList').replaceChildren(); message(); } };
+}
+
+(() => {
+  'use strict';
   const $ = selector => document.querySelector(selector);
   const $$ = selector => [...document.querySelectorAll(selector)];
   const config = ArizonaConfig;
@@ -265,7 +442,7 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
   let published = null, etag = null, dirty = false, saving = false, loading = false, currentPanel = 'overview';
   let accessSubscription, connectionSubscription, reviewSubscription, moderationSubscription;
   let loadedReviews = [], hiddenReviews = {}, moderationBusy = new Set(), idleTimer;
-  const panelNames = { overview: 'Обзор сайта', links: 'Загрузка и ссылки', maintenance: 'Технические работы', reviews: 'Отзывы', security: 'Безопасность' };
+  const panelNames = { overview: 'Обзор сайта', links: 'Загрузка и ссылки', scripts: 'Допскрипты', maintenance: 'Технические работы', reviews: 'Отзывы', security: 'Безопасность' };
 
   function loginMessage(message = '', error = false) { $('#loginStatus').textContent = message; $('#loginStatus').classList.toggle('error', error); }
   function notice(message = '', error = false) { $('#adminStatus').textContent = message; $('#adminStatus').hidden = !message; $('#adminStatus').classList.toggle('error', error); }
@@ -275,6 +452,8 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
     $$('#adminNav button').forEach(button => { if (button.dataset.panel === currentPanel) button.setAttribute('aria-current', 'page'); else button.removeAttribute('aria-current'); });
     $('#panelTitle').textContent = panelNames[currentPanel];
     if (currentPanel === 'reviews') connectModeration();
+    if (currentPanel === 'scripts') scriptManager.open();
+    $('.savebar').hidden = currentPanel === 'scripts';
     window.scrollTo(0, 0);
   }
   $$('#adminNav button').forEach(button => button.addEventListener('click', () => setPanel(button.dataset.panel)));
@@ -320,7 +499,7 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
     previewMaintenance(); updateSavebar();
   });
   $('#discardChanges').addEventListener('click', () => { if (published && !saving) { fill(published); notice('Изменения отменены. В форме опубликованные настройки.'); } });
-  window.addEventListener('beforeunload', event => { if (dirty && allowed) { event.preventDefault(); event.returnValue = ''; } });
+  window.addEventListener('beforeunload', event => { if ((dirty || scriptManager.dirty || scriptManager.busy) && allowed) { event.preventDefault(); event.returnValue = ''; } });
 
   // A bounded REST request cannot leave an offline write queued for later.
   // ETag-based conditional writes protect against edits from another tab.
@@ -472,6 +651,7 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
   }
   function resetSession() {
     cleanup(); allowed = false; published = null; etag = null; dirty = false; saving = false; loading = false;
+    scriptManager.reset();
     $('#dashboard').hidden = true; $('#loginView').hidden = false; $('#deniedLogout').hidden = true;
     confirmDialog.close(); editableForm.reset(); $('#passwordForm').reset(); $('#passwordStatus').textContent = '';
     updateSavebar();
@@ -483,8 +663,8 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
   }
   for (const event of ['pointerdown', 'keydown', 'input']) document.addEventListener(event, bumpIdle, { passive: true });
   async function logout() {
-    if (saving) { notice('Дождись завершения сохранения.'); return; }
-    if (dirty) { notice('Перед выходом сохрани изменения или нажми «Отменить».', true); return; }
+    if (saving || scriptManager.busy) { notice('Дождись завершения сохранения.'); return; }
+    if (dirty || scriptManager.dirty) { notice('Перед выходом сохрани изменения или нажми «Отменить» в открытой форме.', true); return; }
     try { await authApi.signOut(auth); loginMessage('Ты вышел из аккаунта.'); }
     catch { notice('Не удалось завершить сеанс. Повтори выход.', true); }
   }
@@ -583,6 +763,7 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
     } catch (error) { message.textContent = authError(error); message.classList.add('error'); }
     finally { $('#changePassword').disabled = false; }
   });
+  const scriptManager = createScriptManager({ request, isAllowed: () => allowed, element });
   initialize();
 })();
 
